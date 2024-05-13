@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import ThemeButtom from "@/components/theme-ModeToggle";
+import SettingButton from "@/components/setting-icon";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
 
       {/* <Button >Button</Button> */}
       <ThemeButtom />
+      <SettingButton />
 
     </div>
   );
