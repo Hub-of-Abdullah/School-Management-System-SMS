@@ -1,18 +1,28 @@
 "use clint"
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import ThemeButtom from "@/components/theme-ModeToggle";
-import SettingButton from "@/components/setting-icon";
+// import ThemeButtom from "@/components/theme-ModeToggle";
+// import SettingButton from "@/components/setting-icon";
+import { LoginButton } from "@/components/auth/login-button";
 
 export default function Home() {
   return (
-    <div>
+    <main className="flex h-full flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-red-400 to-blue-800">
 
-      {/* <Button >Button</Button> */}
-      <ThemeButtom />
-      <SettingButton />
+      <div className="space-y-6">
+        <h1 className="text-3xl text-center justify-center font-semibold text-white drop-shadow-lg">Create Account</h1>
+      </div>
+      <LoginButton>
+        <Button variant="secondary" size="lg">Sign in</Button>
+      </LoginButton>
 
-    </div>
+      {/* <div className="h-4/5 w-2/6 shadow-2xl">
+      <div className="space-y-6">
+        <h1 className="text-3xl text-center justify-center font-semibold text-white drop-shadow-lg">Create Account</h1>
+      </div>
+     
+      </div> */}
+
+    </main>
   );
 }
 
