@@ -1,83 +1,43 @@
+// const dotenv = require('dotenv');
+// dotenv.config();
 const { NextResponse } = require("next/server");
 const nodemailer = require("nodemailer");
 
 export async function POST(request) {
     const { email, subject, message } = await request.json();
-    const mailRecivers = [
+    const mailReceivers = [
         'mca@bpl.net',
         'abdullah.bp.mmd@gmail.com',
     ];
-    console.log(email);
 
-    const transporter = nodemailer.createTransport({
-        service: "gmail",
+    // Create a transporter object using SMTP transport
+    let transporter = nodemailer.createTransport({
+        name: process.env.OPTIONAL_HOST,
+        host: process.env.SMTP_HOST,
+        port: process.env.SMTP_PORT,
+        secure: process.env.SMTP_PORT == 465, // true for port 465, false for other ports
         auth: {
-            user: process.env.GMAIL_FROM,
-            pass: process.env.GMAIL_APP_PASSWORD,
-        },
-    })
-    const mailOptions = {
-        from: process.env.GMAIL_FROM,
-        to: email,
-        subject: subject,
-        text: message,
-    }
-
-    // const transporter = nodemailer.createTransport({
-    //     host: process.env.WEB_HOST, // SMTP server address (usually mail.your-domain.com) 
-    //     port: 465, // Port for SMTP (usually 465)
-    //     secure: true, // Usually true if connecting to port 465
-    //     auth: {
-    //         user: process.env.GMAIL_FROM, //"***-example-person@gmail.com", // Your email address 
-    //         pass: process.env.GMAIL_APP_PASSWORD, // Password (for gmail, your app password)
-    //         // For better security, use environment variables set on the server for these values when deploying
-    //     },
-    // });
-
-    // const mailOptions = await transporter.sendMail({
-    //     from: process.env.GMAIL_FROM, // knowledgecenter@beximcopharma.net
-    //     to: mailRecivers, // [email, 'abdullah.bp.mmd@gmail.com'],
-    //     subject: `Message from (${email})`,
-    //     text: message,
-    // });
-
-
-    // const transporter = nodemailer.createTransport({
-    //     host: 'beximcopharma.net', // SMTP server address (usually mail.your-domain.com) // 
-    //     port: 465, // Port for SMTP (usually 465)
-    //     secure: true, // Usually true if connecting to port 465
-    //     auth: {
-    //         user: process.env.GMAIL_FROM, //"***-example-person@gmail.com", // Your email address 
-    //         pass: process.env.GMAIL_APP_PASSWORD, // Password (for gmail, your app password)
-    //         // For better security, use environment variables set on the server for these values when deploying
-    //     },
-    // });
-
-    // const mailOptions = await transporter.sendMail({
-    //     from: 'knowledgecenter@beximcopharma.net', // knowledgecenter@beximcopharma.net
-    //     to: mailRecivers, // [email, 'abdullah.bp.mmd@gmail.com'],
-    //     subject: `Message from (${email})`,
-    //     text: message,
-    // });
-
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+        }
+    });
+    let mailOptions = {
+        from: process.env.EMAIL_USER,    // Sender address
+        to: email,     // List of recipients
+        subject: subject,           // Subject line
+        text: message, // Plain text body
+        // html: '<b>Hello, this is a test email!</b>' // HTML body (optional)
+    };
 
     try {
-        // await transporter.sendMail(mailOptions);
-        transporter.sendMail(mailOptions, (err, data) => {
-            if (err) {
-                console.log(err);
-                res.send("error" + JSON.stringify(err));
-            } else {
-                console.log("mail send");
-                res.send("success");
-            }
-        });
+        const info = await transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
         return NextResponse.json({ message: "Success!", status: 200 });
-    } catch (err) {
-        return NextResponse.json({ message: "Failed!", status: 500 });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return NextResponse.json({ message: "Failed!", error: error.toString(), status: 500 });
     }
 }
-
 
 
 // const { NextResponse } = require("next/server");
@@ -85,30 +45,28 @@ export async function POST(request) {
 
 // export async function POST(request) {
 //     const { email, subject, message } = await request.json();
-//     const mailReceivers = [
+//     const mailRecivers = [
 //         'mca@bpl.net',
 //         'abdullah.bp.mmd@gmail.com',
 //     ];
+//     console.log(email);
 
 //     const transporter = nodemailer.createTransport({
-//         host: 'beximcopharma.net',
-//         port: 465,
-//         secure: true,
+//         service: "gmail",
+//         host: process.env.SMTP_HOST,
+//         port: process.env.SMTP_PORT,
+//         secure: process.env.SMTP_PORT == 465, // true for port 465, false for other ports
 //         auth: {
-//         user: process.env.GMAIL_FROM, //"***-example-person@gmail.com", // Your email address
-//         pass: process.env.GMAIL_APP_PASSWORD, // Password (for gmail, your app password)
+//             user: process.env.EMAIL_USER,
+//             pass: process.env.EMAIL_APP_PASSWORD,
 //         },
-//         debug: true, // Enable debug output
-//         logger: true // Log to console
-//     });
-
-
+//     })
 //     const mailOptions = {
-//         from: 'knowledgecenter@beximcopharma.net',
+//         from: process.env.EMAIL_USER,
 //         to: email,
 //         subject: subject,
 //         text: message,
-//     };
+//     }
 
 //     try {
 //         const info = await transporter.sendMail(mailOptions);
@@ -119,6 +77,8 @@ export async function POST(request) {
 //         return NextResponse.json({ message: "Failed!", error: error.toString(), status: 500 });
 //     }
 // }
+
+
 
 
 
