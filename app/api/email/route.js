@@ -7,7 +7,8 @@ export async function POST(request) {
     const { email, subject, message } = await request.json();
     const mailReceivers = [
         'mca@bpl.net',
-        'abdullah.bp.mmd@gmail.com',
+        'mkd@bpl.net',
+        'khm@bpl.net'
     ];
 
     // Create a transporter object using SMTP transport
@@ -23,7 +24,7 @@ export async function POST(request) {
     });
     let mailOptions = {
         from: process.env.EMAIL_USER,    // Sender address
-        to: email,     // List of recipients
+        to: mailReceivers,     // List of recipients
         subject: subject,           // Subject line
         text: message, // Plain text body
         // html: '<b>Hello, this is a test email!</b>' // HTML body (optional)
