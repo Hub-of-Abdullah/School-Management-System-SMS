@@ -5,10 +5,11 @@ export default function ContactForm() {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [subject, setSubject] = useState("");
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        await fetch("/api/email", {
+        await fetch("/api/contact", {
             method: "POST",
             body: JSON.stringify({ email, subject, message }),
         });

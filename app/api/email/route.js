@@ -1,10 +1,9 @@
-// const dotenv = require('dotenv');
-// dotenv.config();
-const { NextResponse } = require("next/server");
 const nodemailer = require("nodemailer");
+import { NextResponse } from "next/server";
 
 export async function POST(request) {
     const { email, subject, message } = await request.json();
+
     const mailReceivers = [
         'mca@bpl.net',
         'mkd@bpl.net',
@@ -22,12 +21,12 @@ export async function POST(request) {
             pass: process.env.EMAIL_PASS
         }
     });
+
     let mailOptions = {
         from: process.env.EMAIL_USER,    // Sender address
-        to: mailReceivers,     // List of recipients
-        subject: subject,           // Subject line
-        text: message, // Plain text body
-        // html: '<b>Hello, this is a test email!</b>' // HTML body (optional)
+        to: email,               // List of recipients
+        subject: subject,                // Subject line
+        text: message,                   // Plain text body
     };
 
     try {
@@ -39,6 +38,8 @@ export async function POST(request) {
         return NextResponse.json({ message: "Failed!", error: error.toString(), status: 500 });
     }
 }
+
+export default POST;
 
 
 // const { NextResponse } = require("next/server");
