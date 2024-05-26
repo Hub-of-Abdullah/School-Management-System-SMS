@@ -4,13 +4,10 @@ import { NextResponse } from "next/server";
 export async function POST(request) {
     const { email, subject, message } = await request.json();
 
-    const mailReceivers = [
-        'mca@bpl.net',
-        'mkd@bpl.net',
-        'khm@bpl.net'
-    ];
+    console.log(email, subject, message);
 
-    // Create a transporter object using SMTP transport
+    console.log(process.env.OPTIONAL_HOST, process.env.SMTP_HOST, process.env.SMTP_PORT,process.env.EMAIL_USER,process.env.EMAIL_PASS)
+    
     let transporter = nodemailer.createTransport({
         name: process.env.OPTIONAL_HOST,
         host: process.env.SMTP_HOST,
